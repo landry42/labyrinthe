@@ -23,21 +23,21 @@ def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
       valeurParDefaut la valeur par défaut
     résultat la matrice ayant les bonnes propriétés
     """
-    pass
+    return [[valeurParDefaut]*nbColonnes]*nbLignes
 
 def getNbLignes(matrice):
     """
     retourne le nombre de lignes de la matrice
     paramètre: matrice la matrice considérée
     """
-    pass
+    return len(matrice)
 
 def getNbColonnes(matrice):
     """
     retourne le nombre de colonnes de la matrice
     paramètre: matrice la matrice considérée
     """
-    pass
+    return len(matrice[0])
 
 def getVal(matrice,ligne,colonne):
     """
@@ -46,7 +46,7 @@ def getVal(matrice,ligne,colonne):
                 ligne le numéro de la ligne (en commençant par 0)
                 colonne le numéro de la colonne (en commençant par 0)
     """
-    pass
+    return matrice[ligne][colonne]
 
 def setVal(matrice,ligne,colonne,valeur):
     """
@@ -57,7 +57,7 @@ def setVal(matrice,ligne,colonne,valeur):
                 valeur la valeur à stocker dans la matrice
     cette fonction ne retourne rien mais modifie la matrice
     """
-    pass
+    matrice[ligne][colonne]=valeur
 
 
 #------------------------------------------        
@@ -73,7 +73,11 @@ def decalageLigneAGauche(matrice, numLig, nouvelleValeur=0):
                  nouvelleValeur la valeur à placer
     résultat la valeur qui a été ejectée lors du décalage
     """
-    pass
+    ejectee=None
+    matrice[numLig].insert(len(matrice[numLig]),nouvelleValeur)
+    ejectee=matrice[numLig][0]
+    matrice[numLig].remove(matrice[numLig][0])
+    return ejectee
 
 def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
     """
@@ -84,7 +88,13 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
                  nouvelleValeur la valeur à placer
     résultat: la valeur de la case "ejectée" par le décalage
     """
-    pass
+    ejectee=None
+    matrice[numLig].insert(0,nouvelleValeur)
+    ejectee=matrice[numLig][7]
+    matrice[numLig].pop()
+    return ejectee
+
+
 def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
     """
     decale la colonne numCol d'une case vers le haut en insérant une nouvelle
@@ -94,7 +104,15 @@ def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
                  nouvelleValeur la valeur à placer
     résultat: la valeur de la case "ejectée" par le décalage
     """
-    pass
+    ejectee=None
+    ejectee=matrice[0][numCol]
+    for i in range(0,len(matrice)-1):
+        matrice[i][numCol]=matrice[i+1][numCol]
+    matrice[len(matrice)-1][numCol]=nouvelleValeur
+    return ejectee,matrice
+
+matrice=[[6, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [8, 0, 0, 0, 0, 0, 0]]
+
 
 def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
     """
@@ -105,5 +123,10 @@ def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
                  nouvelleValeur la valeur à placer
     résultat: la valeur de la case "ejectée" par le décalage
     """
-    pass
+    ejectee=None
+    ejectee=matrice[6][numCol]
+    for i in reversed(range(1,len(matrice))):
+        matrice[i][numCol]=matrice[i-1][numCol]
+    matrice[0][numCol]=nouvelleValeur
+    return ejectee,matrice
 
