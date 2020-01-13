@@ -8,7 +8,7 @@
    
    Ce module gère les cartes du labyrinthe. 
 """
-import random
+from random import *
 
 
 """
@@ -27,49 +27,59 @@ def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
     tresor est le numéro du trésor qui se trouve sur la carte (0 s'il n'y a pas de trésor)
     pions est la liste des pions qui sont posés sur la carte (un pion est un entier entre 1 et 4)
     """
-    pass
+    dico={'nord':nord,'est':est,'sud':sud,'ouest':est,'tresor':tresor,'pions':pions}
+    return dico
+Carte={'nord':False,'est':False,'sud':False,'ouest':True,'tresor':0,'pions':[1,2,3]}
+print(Carte)
 
 def estValide(c):
     """
     retourne un booléen indiquant si la carte est valide ou non c'est à dire qu'elle a zéro un ou deux murs
     paramètre: c une carte
     """
-    pass
+    res=True
+    cpt=0
+    for a,b in c.items():
+        if b==True:
+            cpt+=1
+    if cpt>2:
+        res=False
+    return res
 
 def murNord(c):
     """
     retourne un booléen indiquant si la carte possède un mur au nord
     paramètre: c une carte
     """
-    pass
+    return c['nord']
 
 def murSud(c):
     """
     retourne un booléen indiquant si la carte possède un mur au sud
     paramètre: c une carte
     """
-    pass
+    return c['sud']
 
 def murEst(c):
     """
     retourne un booléen indiquant si la carte possède un mur à l'est
     paramètre: c une carte
     """
-    pass
+    return c['est']
 
 def murOuest(c):
     """
     retourne un booléen indiquant si la carte possède un mur à l'ouest
     paramètre: c une carte
     """
-    pass
+    return c['ouest']
 
 def getListePions(c):
     """
     retourne la liste des pions se trouvant sur la carte
     paramètre: c une carte
     """
-    pass
+    return c['pions']
 
 def setListePions(c,listePions):
     """
@@ -78,14 +88,14 @@ def setListePions(c,listePions):
                 listePions: la liste des pions à poser
     Cette fonction ne retourne rien mais modifie la carte
     """
-    pass
+    c['pions']=listePions
 
 def getNbPions(c):
     """
     retourne le nombre de pions se trouvant sur la carte
     paramètre: c une carte
     """
-    pass
+    return len(c['pions'])
 
 def possedePion(c,pion):
     """
@@ -93,15 +103,18 @@ def possedePion(c,pion):
     paramètres: c une carte
                 pion un entier compris entre 1 et 4
     """
-    pass
-
+    res=False
+    if pion in c['pions']:
+        res=True
+    return res
+print(possedePion(Carte,1))
 
 def getTresor(c):
     """
     retourne la valeur du trésor qui se trouve sur la carte (0 si pas de trésor)
     paramètre: c une carte
     """
-    pass
+    return c['tresor']
 
 def prendreTresor(c):
     """
@@ -109,7 +122,9 @@ def prendreTresor(c):
     paramètre: c une carte
     résultat l'entier représentant le trésor qui était sur la carte
     """
-    pass
+    res=c['tresor']
+    return res
+
 def mettreTresor(c,tresor):
     """
     met le trésor passé en paramètre sur la carte et retourne la valeur de l'ancien trésor
@@ -117,7 +132,9 @@ def mettreTresor(c,tresor):
                 tresor un entier positif
     résultat l'entier représentant le trésor qui était sur la carte
     """
-    pass
+    res=c['tresor']
+    c['tresor']=tresor
+    return res
 
 def prendrePion(c, pion):
     """
@@ -126,7 +143,8 @@ def prendrePion(c, pion):
                 pion un entier compris entre 1 et 4
     Cette fonction modifie la carte mais ne retourne rien
     """
-    pass
+    if pion in c['pions']:
+    	c['pions'].remove(pion)
 
 def poserPion(c, pion):
     """
@@ -135,7 +153,8 @@ def poserPion(c, pion):
                 pion un entier compris entre 1 et 4
     Cette fonction modifie la carte mais ne retourne rien
     """
-    pass
+    if pion not in c['pions']:
+    	c['pions'].append(pion)
 
 def tournerHoraire(c):
     """
@@ -143,7 +162,12 @@ def tournerHoraire(c):
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    a=c['nord']
+    c['nord']=c['ouest']
+    c['ouest']=c['sud']
+    c['sud']=c['est']
+    c['est']=a
+
 
 def tournerAntiHoraire(c):
     """
@@ -151,14 +175,26 @@ def tournerAntiHoraire(c):
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    a=c['nord']
+    c['nord']=c['est']
+    c['est']=c['sud']
+    c['sud']=c['ouest']
+    c['ouest']=a
+
 def tourneAleatoire(c):
     """
     faire tourner la carte d'un nombre de tours aléatoire
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    for i in range(randint(1,10)):
+    	a=c['nord']
+    	c['nord']=c['est']
+    	c['est']=c['sud']
+    	c['sud']=c['ouest']
+    	c['ouest']=a
+
+#listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
 def coderMurs(c):
     """
@@ -172,7 +208,46 @@ def coderMurs(c):
     paramètre c une carte
     retourne un entier indice du caractère semi-graphique de la carte
     """
-    pass
+
+    #l=[nord,est,sud,ouest]
+    l=[0,0,0,0]
+    if c['nord']:
+    	l[0]=1
+    if c['est']:
+    	l[1]=1
+    if c['sud']:
+    	l[2]=1
+    if c['ouest']: 
+    	l[3]=1
+
+    code=str(l[0])+str(l[1])+str(l[2])+str(l[3])
+
+    if code=='0000':
+    	i=0
+    elif code=='1000':
+    	i=1
+    elif code=='0100':
+    	i=2
+    elif code=='1100':
+    	i=3
+    elif code=='0010':
+    	i=4
+    elif  code=='1010':
+    	i=5
+    elif code=='0110':
+    	i=6
+    elif code=='0001':
+    	i=8
+    elif code=='1001':
+    	i=9
+    elif code=='0101':
+    	i=10
+    elif code=='0011':
+    	i=12
+    else:
+    	i=None
+    return i
+print(coderMurs(Carte))
 
 def decoderMurs(c,code):
     """
@@ -181,7 +256,12 @@ def decoderMurs(c,code):
                code un entier codant les murs d'une carte
     Cette fonction modifie la carte mais ne retourne rien
     """    
-    pass
+    c['nord']=code[0]
+    c['est']=code[1]
+    c['sud']=code[2]
+    c['ouest']=code[3]
+    return c
+print(decoderMurs(Carte,'0110'))
 def toChar(c):
     """
     fournit le caractère semi graphique correspondant à la carte (voir la variable listeCartes au début de ce script)
