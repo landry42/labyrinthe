@@ -131,9 +131,14 @@ def mettreTresor(c,tresor):
                 tresor un entier positif
     résultat l'entier représentant le trésor qui était sur la carte
     """
+    res=getTresor(c)
+    c['tresor']=tresor
+    return res
+    """
     res=c['tresor']
     c['tresor']=tresor
     return res
+    """
 
 def prendrePion(c, pion):
     """
@@ -166,7 +171,7 @@ def tournerHoraire(c):
     c['ouest']=c['sud']
     c['sud']=c['est']
     c['est']=a
-
+    return c
 
 def tournerAntiHoraire(c):
     """
@@ -179,7 +184,7 @@ def tournerAntiHoraire(c):
     c['est']=c['sud']
     c['sud']=c['ouest']
     c['ouest']=a
-
+    return c
 def tourneAleatoire(c):
     """
     faire tourner la carte d'un nombre de tours aléatoire
@@ -192,7 +197,7 @@ def tourneAleatoire(c):
     	c['est']=c['sud']
     	c['sud']=c['ouest']
     	c['ouest']=a
-
+    return c
 #listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
 def coderMurs(c):
