@@ -21,6 +21,8 @@ def ListeJoueurs(nomsJoueurs):
     res=[]
     for nom in nomsJoueurs:
         res.append(Joueur(nom))
+    for i in range(len(res)):
+        res[i]["numJoueur"] = i+1
     return res
 
 def ajouterJoueur(joueurs, joueur):
@@ -31,6 +33,7 @@ def ajouterJoueur(joueurs, joueur):
     cette fonction ne retourne rien mais modifie la liste des joueurs
     """
     joueurs.append(joueur)
+    joueurs[len(joueurs)-1]["numJoueur"] = len(joueurs)-1
 
 def initAleatoireJoueurCourant(joueurs):
     """
@@ -38,9 +41,15 @@ def initAleatoireJoueurCourant(joueurs):
     paramètre: joueurs un liste de joueurs
     cette fonction ne retourne rien mais modifie la liste des joueurs
     """
-    courant= random.raindit(0, len(joueurs)-1)
-    joueurs.pop(courant)
-    joueurs.insert(0,joueur[courant])
+    courant= random.randint(0, len(joueurs)-1)
+    stock = joueurs.pop(courant)
+    joueurs.insert(0,stock)
+    for i in range(len(joueurs)):
+        joueurs[i]["numJoueur"] = i+1
+
+Liste_Noms = ["Player1","Player2","Player3","Player4"]
+liste_joueurs = ListeJoueurs(Liste_Noms)
+initAleatoireJoueurCourant(liste_joueurs)
     
 def distribuerTresors(joueurs,nbTresors=24, nbTresorMax=0):
     """
@@ -57,12 +66,13 @@ def distribuerTresors(joueurs,nbTresors=24, nbTresorMax=0):
     tresor = []
     if nbTresorMax == 0:
         nbTresorMax = nbTresors // len(joueurs)
-    for i in range(nbTresors):
+    for i in range(1,nbTresors+1):
         tresor.append(i)
     random.shuffle(tresor)
     for joueur in joueurs:
         for i in range(nbTresorMax):
             joueur["tresor"].append(tresor.pop(0))
+    
             
 
 def changerJoueurCourant(joueurs):
@@ -71,8 +81,13 @@ def changerJoueurCourant(joueurs):
     paramètres: joueurs la liste des joueurs
     cette fonction ne retourne rien mais modifie la liste des joueurs
     """   
+    
     j=joueurs.pop(0)
     joueurs.append(j)
+
+# print(liste_joueurs)
+# changerJoueurCourant(liste_joueurs)
+# print(liste_joueurs)
 
 def getNbJoueurs(joueurs):
     """
