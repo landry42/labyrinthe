@@ -8,7 +8,7 @@
    
    Ce module gère les cartes du labyrinthe. 
 """
-import random
+from random import *
 
 
 """
@@ -18,7 +18,6 @@ le caractère 'Ø' indique que l'indice ne correspond pas à une carte
 """
 listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
-
 def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
     """
     permet de créer une carte:
@@ -27,49 +26,59 @@ def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
     tresor est le numéro du trésor qui se trouve sur la carte (0 s'il n'y a pas de trésor)
     pions est la liste des pions qui sont posés sur la carte (un pion est un entier entre 1 et 4)
     """
-    pass
+    dico={'nord':nord,'est':est,'sud':sud,'ouest':ouest,'tresor':tresor,'pions':pions}
+    return dico
+
+assert isinstance(Carte(False,False,False,True,0,[]),dict),'Erreur 1'
 
 def estValide(c):
     """
     retourne un booléen indiquant si la carte est valide ou non c'est à dire qu'elle a zéro un ou deux murs
     paramètre: c une carte
     """
-    pass
+    res=True
+    cpt=0
+    for a,b in c.items():
+        if b==True:
+            cpt+=1
+    if cpt>2:
+        res=False
+    return res
 
 def murNord(c):
     """
     retourne un booléen indiquant si la carte possède un mur au nord
     paramètre: c une carte
     """
-    pass
+    return c['nord']
 
 def murSud(c):
     """
     retourne un booléen indiquant si la carte possède un mur au sud
     paramètre: c une carte
     """
-    pass
+    return c['sud']
 
 def murEst(c):
     """
     retourne un booléen indiquant si la carte possède un mur à l'est
     paramètre: c une carte
     """
-    pass
+    return c['est']
 
 def murOuest(c):
     """
     retourne un booléen indiquant si la carte possède un mur à l'ouest
     paramètre: c une carte
     """
-    pass
+    return c['ouest']
 
 def getListePions(c):
     """
     retourne la liste des pions se trouvant sur la carte
     paramètre: c une carte
     """
-    pass
+    return c['pions']
 
 def setListePions(c,listePions):
     """
@@ -78,14 +87,14 @@ def setListePions(c,listePions):
                 listePions: la liste des pions à poser
     Cette fonction ne retourne rien mais modifie la carte
     """
-    pass
+    c['pions']=listePions
 
 def getNbPions(c):
     """
     retourne le nombre de pions se trouvant sur la carte
     paramètre: c une carte
     """
-    pass
+    return len(c['pions'])
 
 def possedePion(c,pion):
     """
@@ -93,15 +102,17 @@ def possedePion(c,pion):
     paramètres: c une carte
                 pion un entier compris entre 1 et 4
     """
-    pass
-
+    res=False
+    if pion in c['pions']:
+        res=True
+    return res
 
 def getTresor(c):
     """
     retourne la valeur du trésor qui se trouve sur la carte (0 si pas de trésor)
     paramètre: c une carte
     """
-    pass
+    return c['tresor']
 
 def prendreTresor(c):
     """
@@ -109,7 +120,10 @@ def prendreTresor(c):
     paramètre: c une carte
     résultat l'entier représentant le trésor qui était sur la carte
     """
-    pass
+    res=c['tresor']
+    c['tresor']=0
+    return res
+
 def mettreTresor(c,tresor):
     """
     met le trésor passé en paramètre sur la carte et retourne la valeur de l'ancien trésor
@@ -117,7 +131,9 @@ def mettreTresor(c,tresor):
                 tresor un entier positif
     résultat l'entier représentant le trésor qui était sur la carte
     """
-    pass
+    res=c['tresor']
+    c['tresor']=tresor
+    return res
 
 def prendrePion(c, pion):
     """
@@ -126,7 +142,8 @@ def prendrePion(c, pion):
                 pion un entier compris entre 1 et 4
     Cette fonction modifie la carte mais ne retourne rien
     """
-    pass
+    if pion in c['pions']:
+    	c['pions'].remove(pion)
 
 def poserPion(c, pion):
     """
@@ -135,7 +152,8 @@ def poserPion(c, pion):
                 pion un entier compris entre 1 et 4
     Cette fonction modifie la carte mais ne retourne rien
     """
-    pass
+    if pion not in c['pions']:
+    	c['pions'].append(pion)
 
 def tournerHoraire(c):
     """
@@ -143,7 +161,12 @@ def tournerHoraire(c):
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    a=c['nord']
+    c['nord']=c['ouest']
+    c['ouest']=c['sud']
+    c['sud']=c['est']
+    c['est']=a
+
 
 def tournerAntiHoraire(c):
     """
@@ -151,14 +174,26 @@ def tournerAntiHoraire(c):
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    a=c['nord']
+    c['nord']=c['est']
+    c['est']=c['sud']
+    c['sud']=c['ouest']
+    c['ouest']=a
+
 def tourneAleatoire(c):
     """
     faire tourner la carte d'un nombre de tours aléatoire
     paramètres: c une carte
     Cette fonction modifie la carte mais ne retourne rien    
     """
-    pass
+    for i in range(randint(1,10)):
+    	a=c['nord']
+    	c['nord']=c['est']
+    	c['est']=c['sud']
+    	c['sud']=c['ouest']
+    	c['ouest']=a
+
+#listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
 def coderMurs(c):
     """
@@ -172,7 +207,54 @@ def coderMurs(c):
     paramètre c une carte
     retourne un entier indice du caractère semi-graphique de la carte
     """
-    pass
+
+    #l=[nord,est,sud,ouest]
+    l=[0,0,0,0]
+    i=0
+    if c['nord']:
+    	l[0]=1
+    if c['est']:
+    	l[1]=1
+    if c['sud']:
+    	l[2]=1
+    if c['ouest']: 
+    	l[3]=1
+    l.reverse()
+    code=str(l[0])+str(l[1])+str(l[2])+str(l[3])
+
+    if code=='0000':
+    	i=0
+    elif code=='0001':
+    	i=1
+    elif code=='0010':
+    	i=2
+    elif code=='0011':
+    	i=3
+    elif code=='0100':
+    	i=4
+    elif  code=='0101':
+    	i=5
+    elif code=='0110':
+    	i=6
+    elif code=='1000':
+    	i=8
+    elif code=='1001':
+    	i=9
+    elif code=='1010':
+    	i=10
+    elif code=='1100':
+    	i=12
+    elif code=='0111':
+        i=7
+    elif code=='1011':
+        i=11
+    elif code=='1101':
+        i=13
+    elif code=='1110':
+        i=14
+    elif code=='1111':
+        i=15
+    return i
 
 def decoderMurs(c,code):
     """
@@ -180,14 +262,29 @@ def decoderMurs(c,code):
     paramètres c une carte
                code un entier codant les murs d'une carte
     Cette fonction modifie la carte mais ne retourne rien
-    """    
-    pass
+    """
+    conversion= "{0:b}".format(code)
+    conversion_4_bits= '0'*(4-len(conversion)) + conversion
+
+    c["ouest"] = bool(int(conversion_4_bits[0]))
+    c["sud"] = bool(int(conversion_4_bits[1]))
+    c["est"] = bool(int(conversion_4_bits[2]))
+    c["nord"] = bool(int(conversion_4_bits[3]))
+
+
+
+#Carte={'nord':False,'est':False,'sud':False,'ouest':True,'tresor':0,'pions':[]}
+
+
 def toChar(c):
     """
     fournit le caractère semi graphique correspondant à la carte (voir la variable listeCartes au début de ce script)
     paramètres c une carte
     """
-    pass
+    res='Ø'
+    if listeCartes[coderMurs(c)]!='Ø':
+        res=listeCartes[coderMurs(c)]
+    return res
 
 def passageNord(carte1,carte2):
     """
@@ -196,7 +293,10 @@ def passageNord(carte1,carte2):
     paramètres carte1 et carte2 deux cartes
     résultat un booléen
     """
-    pass
+    res=False
+    if not carte1['nord'] and not carte2['sud']:
+        res=True
+    return res
 
 def passageSud(carte1,carte2):
     """
@@ -205,7 +305,10 @@ def passageSud(carte1,carte2):
     paramètres carte1 et carte2 deux cartes
     résultat un booléen
     """
-    pass
+    res=False
+    if not carte1['sud'] and not carte2['nord']:
+        res=True
+    return res
 
 def passageOuest(carte1,carte2):
     """
@@ -214,7 +317,10 @@ def passageOuest(carte1,carte2):
     paramètres carte1 et carte2 deux cartes
     résultat un booléen
     """
-    pass
+    res=False
+    if not carte1['ouest'] and not carte2['est']:
+        res=True
+    return res
 
 def passageEst(carte1,carte2):
     """
@@ -223,4 +329,7 @@ def passageEst(carte1,carte2):
     paramètres carte1 et carte2 deux cartes
     résultat un booléen    
     """
-    pass
+    res=False
+    if not carte1['est'] and not carte2['ouest']:
+        res=True
+    return res
