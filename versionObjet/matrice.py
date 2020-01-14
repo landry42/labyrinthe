@@ -62,7 +62,7 @@ class Matrice(object):
     #------------------------------------------
     def decalageLigneAGauche(self, numLig, nouvelleValeur=0):
         """
-        Permet de decaler une ligne vers la gauche en inserant une nouvelle valeur sur la droite de ladite ligne.
+        Permet de decaler une ligne vers la gauche en inserant une nouvelle valeur sur la droite de la dite ligne.
 
             Parametres : numLig la ligne a decaler, et
                         nouvelleValeur la valeur a placer.
@@ -122,6 +122,10 @@ class Matrice(object):
         
        
 if __name__ == "__main__":
-    mat = Matrice(3,3,5)
-    assert mat.getNbLignes() == 3
-    assert mat.getVal(2,2) == 5
+    mat = Matrice(5,5,5)
+    assert mat.getNbLignes() == 5
+    mat.setVal(3,3,4)
+    assert mat.getVal(3,3) == 4
+    assert mat.decalageLigneAGauche(2,0) == 5
+    #assert mat.decalageLigneADroite(2,0) == 5
+    assert mat.
