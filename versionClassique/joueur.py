@@ -15,7 +15,7 @@ def Joueur(nom):
     paramètre: nom une chaine de caractères
     retourne le joueur ainsi créé
     """
-    return {"nom":nom,"tresor":[]}
+    return {"nom":nom,"tresor":[],"numJoueur":0}
 
 def ajouterTresor(joueur,tresor):
     """
