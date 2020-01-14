@@ -6,13 +6,13 @@
    Module listeJoueurs
    ~~~~~~~~~~~~~~~~~~~
    
-   Ce module gère la liste des joueurs. 
+   Ce module gère la liste des Joueurs. 
 """
 import random
 from joueur import *
 
 class ListeJoueurs(object):
-    def _init_(self, nomsJoueurs):
+    def __init__(self, nomsJoueurs):
         """
         constructeur
         """
@@ -20,147 +20,166 @@ class ListeJoueurs(object):
         for nom in nomsJoueurs:
             res.append(Joueur(nom))
         for i in range(len(res)):
-            res[i].numjoueur = i+1
-        self.joueurs = res
+            res[i].setNumJoueur(i+1)
+        self._listeJoueurs = res
 
-    def ajouterJoueur(self, joueur):
+    def getListeJoueurs(self):
+        return self._listeJoueurs
+
+    def ajouterJoueur(self, Joueur):
         """
-        ajoute un nouveau joueur à la fin de la liste
-        paramètres: joueurs un liste de joueurs
-                    joueur le joueur à ajouter
-        cette fonction ne retourne rien mais modifie la liste des joueurs
+        ajoute un nouveau Joueur à la fin de la liste
+        paramètres: Joueurs un liste de Joueurs
+                    Joueur le Joueur à ajouter
+        cette fonction ne retourne rien mais modifie la liste des Joueurs
         """
-        self.joueurs.append(joueur)
-        self.joueurs[len(self.joueurs)-1]["numJoueur"] = len(self.joueurs)-1
+        self._listeJoueurs.append(Joueur)
+        self._listeJoueurs[len(self._listeJoueurs)-1].setNumJoueur(len(self._listeJoueurs))
 
     def initAleatoireJoueurCourant(self):
         """
-        tire au sort le joueur courant
-        paramètre: joueurs un liste de joueurs
-        cette fonction ne retourne rien mais modifie la liste des joueurs
+        tire au sort le Joueur courant
+        paramètre: _listeJoueurs un liste de _listeJoueurs
+        cette fonction ne retourne rien mais modifie la liste des _listeJoueurs
         """
-        courant= random.randint(0, len(self.joueurs)-1)
-        stock = self.joueurs.pop(courant)
-        self.joueurs.insert(0,stock)
-        for i in range(len(self.joueurs)):
-            self.joueurs[i]["numJoueur"] = i+1
+        courant= random.randint(0, len(self._listeJoueurs)-1)
+        stock = self._listeJoueurs.pop(courant)
+        self._listeJoueurs.insert(0,stock)
+        for i in range(len(self._listeJoueurs)):
+            self._listeJoueurs[i].setNumJoueur(i+1)
     
     def distribuerTresors(self,nbTresors=24, nbTresorMax=0):
         """
-        distribue de manière aléatoire des trésors entre les joueurs.
-        paramètres: joueurs la liste des joueurs
+        distribue de manière aléatoire des trésors entre les _listeJoueurs.
+        paramètres: _listeJoueurs la liste des _listeJoueurs
                     nbTresors le nombre total de trésors à distribuer (on rappelle 
                             que les trésors sont des entiers de 1 à nbTresors)
                     nbTresorsMax un entier fixant le nombre maximum de trésor 
-                                qu'un joueur aura après la distribution
+                                qu'un Joueur aura après la distribution
                                 si ce paramètre vaut 0 on distribue le maximum
                                 de trésor possible  
-        cette fonction ne retourne rien mais modifie la liste des joueurs
+        cette fonction ne retourne rien mais modifie la liste des _listeJoueurs
         """
         tresor = []
         if nbTresorMax == 0:
-            nbTresorMax = nbTresors // len(self.joueurs)
+            nbTresorMax = nbTresors // len(self._listeJoueurs)
         for i in range(1,nbTresors+1):
             tresor.append(i)
         random.shuffle(tresor)
-        for joueur in self.joueurs:
+        for Joueur in self._listeJoueurs:
             for i in range(nbTresorMax):
-                joueur["tresor"].append(tresor.pop(0))
+                Joueur.addTresor(tresor.pop(0))
 
     def changerJoueurCourant(self):
         """
-        passe au joueur suivant (change le joueur courant donc)
-        paramètres: joueurs la liste des joueurs
-        cette fonction ne retourne rien mais modifie la liste des joueurs
+        passe au Joueur suivant (change le Joueur courant donc)
+        paramètres: _listeJoueurs la liste des _listeJoueurs
+        cette fonction ne retourne rien mais modifie la liste des _listeJoueurs
         """   
         
-        j=self.joueurs.pop(0)
-        self.joueurs.append(j)
+        j=self._listeJoueurs.pop(0)
+        self._listeJoueurs.append(j)
 
-    def getNbJoueurs(self):
+    def getNb_listeJoueurs(self):
         """
-        retourne le nombre de joueurs participant à la partie
-        paramètre: joueurs la liste des joueurs
-        résultat: le nombre de joueurs de la partie
+        retourne le nombre de _listeJoueurs participant à la partie
+        paramètre: _listeJoueurs la liste des _listeJoueurs
+        résultat: le nombre de _listeJoueurs de la partie
         """
-        return len(self.joueurs)
+        return len(self._listeJoueurs)
 
     def getJoueurCourant(self):
         """
-        retourne le joueur courant
-        paramètre: joueurs la liste des joueurs
-        résultat: le joueur courant
+        retourne le Joueur courant
+        paramètre: _listeJoueurs la liste des _listeJoueurs
+        résultat: le Joueur courant
         """
-        return self.joueurs[0]
+        return self._listeJoueurs[0]
 
-    def joueurCourantTrouveTresor(self):
+    def JoueurCourantTrouveTresor(self):
         """
-        Met à jour le joueur courant lorsqu'il a trouvé un trésor
+        Met à jour le Joueur courant lorsqu'il a trouvé un trésor
         c-à-d enlève le trésor de sa liste de trésors à trouver
-        paramètre: joueurs la liste des joueurs
-        cette fonction ne retourne rien mais modifie la liste des joueurs
+        paramètre: _listeJoueurs la liste des _listeJoueurs
+        cette fonction ne retourne rien mais modifie la liste des _listeJoueurs
         """
-        tresorTrouve(self.joueurs[0])
+        self._listeJoueurs[0].tresorTrouve()
 
     def nbTresorsRestantsJoueur(self,numJoueur):
         """
-        retourne le nombre de trésors restant pour le joueur dont le numéro 
+        retourne le nombre de trésors restant pour le Joueur dont le numéro 
         est donné en paramètre
-        paramètres: joueurs la liste des joueurs
-                    numJoueur le numéro du joueur
-        résultat: le nombre de trésors que joueur numJoueur doit encore trouver
+        paramètres: _listeJoueurs la liste des _listeJoueurs
+                    numJoueur le numéro du Joueur
+        résultat: le nombre de trésors que Joueur numJoueur doit encore trouver
         """
-        return getNbTresorsRestants(self.joueurs[numJoueur -1])
+        return self._listeJoueurs[self.getIndex(numJoueur)].getNbTresorsRestants()
 
     def numJoueurCourant(self):
         """
-        retourne le numéro du joueur courant
-        paramètre: joueurs la liste des joueurs
-        résultat: le numéro du joueur courant
+        retourne le numéro du Joueur courant
+        paramètre: _listeJoueurs la liste des _listeJoueurs
+        résultat: le numéro du Joueur courant
         """
-        return self.joueurs[0]["numJoueur"]
-
+        return self._listeJoueurs[0].getNumJoueur()
     def nomJoueurCourant(self):
         """
-        retourne le nom du joueur courant
-        paramètre: joueurs la liste des joueurs
-        résultat: le nom du joueur courant
+        retourne le nom du Joueur courant
+        paramètre: _listeJoueurs la liste des _listeJoueurs
+        résultat: le nom du Joueur courant
         """
-        return getNom(self.joueurs[0])
+        return self._listeJoueurs[0].getNom()
 
     def nomJoueur(self,numJoueur):
         """
-        retourne le nom du joueur dont le numero est donné en paramètre
-        paramètres: joueurs la liste des joueurs
-                    numJoueur le numéro du joueur    
-        résultat: le nom du joueur numJoueur
+        retourne le nom du Joueur dont le numero est donné en paramètre
+        paramètres: _listeJoueurs la liste des _listeJoueurs
+                    numJoueur le numéro du Joueur    
+        résultat: le nom du Joueur numJoueur
         """
-        return getNom(self.joueurs[numJoueur -1])
+        return self._listeJoueurs[self.getIndex(numJoueur)].getNom()
 
     def prochainTresorJoueur(self,numJoueur):
         """
-        retourne le trésor courant du joueur dont le numero est donné en paramètre
-        paramètres: joueurs la liste des joueurs
-                    numJoueur le numéro du joueur    
-        résultat: le prochain trésor du joueur numJoueur (un entier)
+        retourne le trésor courant du Joueur dont le numero est donné en paramètre
+        paramètres: _listeJoueurs la liste des _listeJoueurs
+                    numJoueur le numéro du Joueur    
+        résultat: le prochain trésor du Joueur numJoueur (un entier)
         """
-        return prochainTresor(self.joueurs[numJoueur -1])
+        return self._listeJoueurs[self.getIndex(numJoueur)].prochainTresor()
 
     def tresorCourant(self):
         """
-        retourne le trésor courant du joueur courant
-        paramètre: joueurs la liste des joueurs 
-        résultat: le prochain trésor du joueur courant (un entier)
+        retourne le trésor courant du Joueur courant
+        paramètre: _listeJoueurs la liste des _listeJoueurs 
+        résultat: le prochain trésor du Joueur courant (un entier)
         """
-        return prochainTresor(self.joueurs[0])
+        return self._listeJoueurs[0].prochainTresor()
 
-    def joueurCourantAFini(self):
+    def JoueurCourantAFini(self):
         """
-        indique si le joueur courant a gagné
-        paramètre: joueurs la liste des joueurs 
-        résultat: un booleen indiquant si le joueur courant a fini
+        indique si le Joueur courant a gagné
+        paramètre: _listeJoueurs la liste des _listeJoueurs 
+        résultat: un booleen indiquant si le Joueur courant a fini
         """
         res=False
-        if len(self.joueurs[0]["tresor"]) == 0:
+        if len(self._listeJoueurs[0]["tresor"]) == 0:
             res = True
         return res
+    
+    def getIndex(self,numJoueur):
+        """
+        retourne l'index du joueur dans la liste en fonction de son numéro.
+        S'il est inexistant, retourne None
+        """
+        i = 0
+        while i < len(self._listeJoueurs) and self._listeJoueurs[i].getNumJoueur() != numJoueur:
+            i += 1
+        if i == len(self._listeJoueurs):
+            i = None
+        return i
+
+if __name__=='__main__':
+    nomsJoueurs = ["Joueur_1","Joueur_2","Joueur_3"]
+    l=ListeJoueurs(nomsJoueurs)
+    l.ajouterJoueur(Joueur("Joueur_4"))
