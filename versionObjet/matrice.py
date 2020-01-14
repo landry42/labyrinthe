@@ -65,7 +65,7 @@ class Matrice(object):
         Permet de decaler une ligne vers la gauche en inserant une nouvelle valeur sur la droite de la dite ligne.
 
             Parametres : numLig la ligne a decaler, et
-                        nouvelleValeur la valeur a placer.
+                         nouvelleValeur la valeur a placer.
             Resultat : la valeur ejectee apres le decalage.
         """
         ejectee=None
@@ -79,13 +79,13 @@ class Matrice(object):
         decale la ligne numLig d'une case vers la droite en insérant une nouvelle
             valeur pour remplacer la premiere case à gauche de cette ligne
             paramèteres: matrice la matrice considérée
-                    numLig le numéro de la ligne à décaler
-                    nouvelleValeur la valeur à placer
+                         numLig le numéro de la ligne à décaler
+                         nouvelleValeur la valeur à placer
             résultat: la valeur de la case "ejectée" par le décalage
         """
         ejectee=None
         self._matrice[numLig].insert(0,nouvelleValeur)
-        ejectee=self._matrice[numLig][7]
+        ejectee=self._matrice[numLig][3]
         self._matrice[numLig].pop()
         return ejectee
 
@@ -94,9 +94,8 @@ class Matrice(object):
         """
         decale la colonne numCol d'une case vers le haut en insérant une nouvelle
         valeur pour remplacer la premiere case en bas de cette ligne
-        paramèteres: self._matrice la self._matrice considérée
-                    numCol le numéro de la colonne à décaler
-                    nouvelleValeur la valeur à placer
+        paramèteres: numCol le numéro de la colonne à décaler
+                     nouvelleValeur la valeur à placer
         résultat: la valeur de la case "ejectée" par le décalage
         """
         ejectee=None
@@ -104,13 +103,13 @@ class Matrice(object):
         for i in range(0,len(self._matrice)-1):
             self._matrice[i][numCol]=self._matrice[i+1][numCol]
         self._matrice[len(self._matrice)-1][numCol]=nouvelleValeur
-        return ejectee,self._matrice
+        return ejectee
 
     #self._matrice=[[6, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [8, 0, 0, 0, 0, 0, 0]]
 
 
     def decalageColonneEnBas(self, numCol, nouvelleValeur=0):
-       """
+        """
         decale la colonne numCol d'une case vers le bas en insérant une nouvelle
         valeur pour remplacer la premiere case en haut de cette ligne
         paramèteres: matrice la matrice considérée
@@ -118,14 +117,30 @@ class Matrice(object):
                     nouvelleValeur la valeur à placer
         résultat: la valeur de la case "ejectée" par le décalage
         """
+        ejectee=None
+        ejectee=self._matrice[len(self._matrice)-1][numCol]
+        for i in reversed(range(1,len(self._matrice))):
+            self._matrice[i][numCol]=self._matrice[i-1][numCol]
+        self._matrice[0][numCol]=nouvelleValeur
+        return ejectee
 
         
        
 if __name__ == "__main__":
-    mat = Matrice(5,5,5)
-    assert mat.getNbLignes() == 5
-    mat.setVal(3,3,4)
-    assert mat.getVal(3,3) == 4
-    assert mat.decalageLigneAGauche(2,0) == 5
-    #assert mat.decalageLigneADroite(2,0) == 5
-    assert mat.
+    mat = Matrice(3,3,3)
+    assert mat.getNbLignes() == 3
+    mat.setVal(0,0,0)
+    mat.setVal(0,1,1)
+    mat.setVal(0,2,2)
+    mat.setVal(1,0,3)
+    mat.setVal(1,1,4)
+    mat.setVal(1,2,5)
+    mat.setVal(2,0,6)
+    mat.setVal(2,1,7)
+    mat.setVal(2,2,8)
+    assert mat.getVal(2,2) == 8
+    #print(mat.decalageLigneAGauche(2,0))
+    #assert mat.decalageLigneAGauche(2,0) == 6
+    #assert mat.decalageLigneADroite(2,0) == 8
+    #assert mat.decalageColonneEnHaut(2,0)==2
+    #assert mat.decalageColonneEnBas(1,0) == 7
