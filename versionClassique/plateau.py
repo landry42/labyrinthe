@@ -75,7 +75,7 @@ def Plateau(nbJoueurs, nbTresors):
 
 
     #cartes amovibles
-    cartesAmovibles=creerCartesAmovibles(17, nbTresors)   #17 car nous avons deja placer 16 tresors
+    cartesAmovibles=creerCartesAmovibles(12, nbTresors)   #12 car nous avons deja placer 12 tresors
 
     listeAmovibles=cartesAmovibles[0]
     carteDeTrop=cartesAmovibles[1]
@@ -87,7 +87,7 @@ def Plateau(nbJoueurs, nbTresors):
 
     cpt=0
     for i in range(len(matricePourPlateau)):
-        if matricePourPlateau[i]==0
+        if matricePourPlateau[i]==0:
             matricePourPlateau[i]=listeAmovibles[cpt]
             cpt+=1
 
@@ -122,6 +122,7 @@ def Plateau(nbJoueurs, nbTresors):
             cpt=0
     """
     return matricePourPlateau,CarteDeTrop
+
 
 def creerCartesAmovibles(tresorDebut,nbTresors):
     """
@@ -158,22 +159,22 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
             cptJonctions-=1
 
     while cptToutDroit>0:
-        for i in range(cptDroit):
+        for i in range(cptToutDroit):
             carte = Carte(True, False, True, False, 0, [])
             carte=tourneAleatoire(carte)
             listeCartes.append(carte)
             cptToutDroit-=1
 
 
-    ListeCartes=random.sample(ListeCartes, len(ListeCartes))
+    shuffle(listeCartes)
     
     alea=None
-    for i in range(len(ListeCartes)):
-        alea=random.randint(0,1)
-        if alea==1:
-            mettreTresor(ListeCartes[i], i)
+    for i in range(0,len(listeCartes),2):
+        mettreTresor(listeCartes[i], i)
     
-    return ListeCartes
+    return listeCartes
+
+print(creerCartesAmovibles(17,46))
 
 def prendreTresorPlateau(plateau,lig,col,numTresor):
     """
@@ -187,7 +188,7 @@ def prendreTresorPlateau(plateau,lig,col,numTresor):
     resultat: un booléen indiquant si le trésor était bien sur la carte considérée
     """
     res=getVal(plateau,lig,col)
-    if numTresor=res["tresor"]:
+    if numTresor==res["tresor"]:
         Booleen=True
         prendreTresor(res)
     else:
