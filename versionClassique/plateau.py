@@ -27,8 +27,7 @@ def Plateau(nbJoueurs, nbTresors):
     ListeTresors=[]
     for i in range(12):         #Il y a 12 tresors
         ListeTresors.append(i)  
-    ListeTresors=random.sample(ListeTresors, len(ListeTresors))
-    
+    shuffle(ListeTresors)
 
     matrice=Matrice(7,7,0)
     
@@ -77,8 +76,8 @@ def Plateau(nbJoueurs, nbTresors):
     #cartes amovibles
     cartesAmovibles=creerCartesAmovibles(12, nbTresors)   #12 car nous avons deja placer 12 tresors
 
-    listeAmovibles=cartesAmovibles[0]
-    carteDeTrop=cartesAmovibles[1]
+
+    carteDeTrop=cartesAmovibles[0]
 
     matricePourPlateau=[]
     for miniListe in matrice:
@@ -88,7 +87,7 @@ def Plateau(nbJoueurs, nbTresors):
     cpt=0
     for i in range(len(matricePourPlateau)):
         if matricePourPlateau[i]==0:
-            matricePourPlateau[i]=listeAmovibles[cpt]
+            matricePourPlateau[i]=cartesAmovibles[cpt]
             cpt+=1
 
     # Nb joueurs
@@ -123,6 +122,7 @@ def Plateau(nbJoueurs, nbTresors):
     """
     return matricePourPlateau,CarteDeTrop
 
+print(Plateau(4, 12))
 
 def creerCartesAmovibles(tresorDebut,nbTresors):
     """
@@ -171,10 +171,7 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
     alea=None
     for i in range(0,len(listeCartes),2):
         mettreTresor(listeCartes[i], i)
-    
     return listeCartes
-
-print(creerCartesAmovibles(17,46))
 
 def prendreTresorPlateau(plateau,lig,col,numTresor):
     """
