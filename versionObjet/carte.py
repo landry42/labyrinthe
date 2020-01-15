@@ -19,7 +19,7 @@ le caractère 'Ø' indique que l'indice ne correspond pas à une carte
 listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
 class Carte(object):
-    def _init(self,nord,est,sud,ouest,tresor,pions):
+    def __init__(self,nord,est,sud,ouest,tresor=0,pions=[]):
         """
         constructeur
         """
@@ -27,8 +27,10 @@ class Carte(object):
         self._est=est
         self._sud=sud
         self._ouest=ouest
-        self._tresor=tresor=0
-        self._pions=pions=[]
+        self._tresor=tresor
+        self._pions=pions
+        # self.murs = []
+        # self.items = None
 
     def Carte(self, nord, est, sud, ouest, tresor=0, pions=[]):
         """
@@ -198,13 +200,13 @@ class Carte(object):
         Cette fonction modifie la carte mais ne retourne rien    
         """
         for i in range(randint(1,10)):
-    	    a=self._nord
+            a=self._nord
             self._nord=self._est
             self._est=self._sud
             self._sud=self._ouest
             self._ouest=a
 
-#listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
+    #listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 
     def coderMurs(self):
         """
@@ -281,10 +283,7 @@ class Carte(object):
         self._sud = bool(int(conversion_4_bits[1]))
         self._est = bool(int(conversion_4_bits[2]))
         self._nord = bool(int(conversion_4_bits[3]))
-
-
-
-#Carte={'nord':False,'est':False,'sud':False,'ouest':True,'tresor':0,'pions':[]}
+    #Carte={'nord':False,'est':False,'sud':False,'ouest':True,'tresor':0,'pions':[]}
 
 
     def toChar(self):
@@ -293,8 +292,8 @@ class Carte(object):
         paramètres c une carte
         """
         res='Ø'
-        if listeCartes[coderMurs(self)]!='Ø':
-            res=listeCartes[coderMurs(self)]
+        if listeCartes[self.coderMurs()]!='Ø':
+            res=listeCartes[self.coderMurs()]
         return res
 
     def passageNord(self,carte2):
@@ -309,38 +308,38 @@ class Carte(object):
             res=True
         return res
 
-def passageSud(self,carte2):
-    """
-    suppose que la carte2 est placée au sud de la carte1 et indique
-    s'il y a un passage entre ces deux cartes en passant par le sud
-    paramètres carte1 et carte2 deux cartes
-    résultat un booléen
-    """
-    res=False
-    if not self._sud and not carte2['nord']:
-        res=True
-    return res
+    def passageSud(self,carte2):
+        """
+        suppose que la carte2 est placée au sud de la carte1 et indique
+        s'il y a un passage entre ces deux cartes en passant par le sud
+        paramètres carte1 et carte2 deux cartes
+        résultat un booléen
+        """
+        res=False
+        if not self._sud and not carte2['nord']:
+            res=True
+        return res
 
-def passageOuest(self,carte2):
-    """
-    suppose que la carte2 est placée à l'ouest de la carte1 et indique
-    s'il y a un passage entre ces deux cartes en passant par l'ouest
-    paramètres carte1 et carte2 deux cartes
-    résultat un booléen
-    """
-    res=False
-    if not self._ouest and not carte2['est']:
-        res=True
-    return res
+    def passageOuest(self,carte2):
+        """
+        suppose que la carte2 est placée à l'ouest de la carte1 et indique
+        s'il y a un passage entre ces deux cartes en passant par l'ouest
+        paramètres carte1 et carte2 deux cartes
+        résultat un booléen
+        """
+        res=False
+        if not self._ouest and not carte2['est']:
+            res=True
+        return res
 
-def passageEst(self,carte2):
-    """
-    suppose que la carte2 est placée à l'est de la carte1 et indique
-    s'il y a un passage entre ces deux cartes en passant par l'est
-    paramètres carte1 et carte2 deux cartes
-    résultat un booléen    
-    """
-    res=False
-    if not self._est and not carte2['ouest']:
-        res=True
-    return res
+    def passageEst(self,carte2):
+        """
+        suppose que la carte2 est placée à l'est de la carte1 et indique
+        s'il y a un passage entre ces deux cartes en passant par l'est
+        paramètres carte1 et carte2 deux cartes
+        résultat un booléen    
+        """
+        res=False
+        if not self._est and not carte2['ouest']:
+            res=True
+        return res
