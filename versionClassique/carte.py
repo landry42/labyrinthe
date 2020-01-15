@@ -159,7 +159,7 @@ def poserPion(c, pion):
     """
     if pion not in c['pions']:
     	c['pions'].append(pion)
-
+    
 def tournerHoraire(c):
     """
     fait tourner la carte dans le sens horaire

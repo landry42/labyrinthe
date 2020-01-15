@@ -12,6 +12,7 @@
 #-----------------------------------------
 # contructeur et accesseurs
 #-----------------------------------------
+from carte  import *
 
 def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
     """
@@ -23,7 +24,11 @@ def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
       valeurParDefaut la valeur par défaut
     résultat la matrice ayant les bonnes propriétés
     """
-    return [[valeurParDefaut]*nbColonnes]*nbLignes
+    #return [[valeurParDefaut]*nbColonnes]*nbLignes
+    res = [valeurParDefaut] * nbLignes
+    for i in range(nbLignes):
+        res[i] = [valeurParDefaut] * nbColonnes
+    return res
 
 def getNbLignes(matrice):
     """
@@ -130,3 +135,27 @@ def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
     matrice[0][numCol]=nouvelleValeur
     return ejectee,matrice
 
+def afficheLigneSeparatrice(matrice,tailleCellule=4):
+    '''
+    Affichage d'une matrice
+    fonction annexe pour afficher les lignes séparatrices
+    '''
+    print()
+    for i in range(getNbColonnes(matrice)+1):
+        print('-'*tailleCellule+'+', end='')
+    print()
+
+def afficheMatrice(matrice,tailleCellule=4):
+
+    nbColonnes=getNbColonnes(matrice)
+    nbLignes=getNbLignes(matrice)
+    print(' '*tailleCellule+'|', end='')
+    for i in range(nbColonnes):
+        print(str(i).center(tailleCellule)+'|', end='')
+    afficheLigneSeparatrice(matrice,tailleCellule)
+    for i in range(nbLignes):
+        print(str(i).rjust(tailleCellule)+'|', end='')
+        for j in range(nbColonnes):
+            print(toChar(getVal(matrice,i,j)).rjust(tailleCellule)+'|', end='')
+        afficheLigneSeparatrice(matrice,tailleCellule)
+    print()

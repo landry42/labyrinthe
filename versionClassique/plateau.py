@@ -8,121 +8,9 @@
    
    Ce module gère le plateau de jeu. 
 """
-import random
 from matrice import *
 from carte import *
-
-def Plateau(nbJoueurs, nbTresors):
-    """
-    créer un nouveau plateau contenant nbJoueurs et nbTrésors
-    paramètres: nbJoueurs le nombre de joueurs (un nombre entre 1 et 4)
-                nbTresors le nombre de trésor à placer (un nombre entre 1 et 49)
-    resultat: un couple contenant
-              - une matrice de taille 7x7 représentant un plateau de labyrinthe où les cartes
-                ont été placée de manière aléatoire
-              - la carte amovible qui n'a pas été placée sur le plateau
-    """
-
-    # Liste des tresors
-    ListeTresors=[]
-    for i in range(12):         #Il y a 12 tresors
-        ListeTresors.append(i)  
-    shuffle(ListeTresors)
-
-    matrice=Matrice(7,7,0)
-    
-    # 1ere ligne fixe
-    matrice[0][0]=Carte(True, False, False, True, 0, [])        #On ne met pas de tresor sur les coins
-    matrice[0][2]=Carte(True, False, False, False, 0, [])
-    mettreTresor(matrice[0][2], ListeTresors[0])
-    matrice[0][4]=Carte(True, False, False, False, 0, [])
-    mettreTresor(matrice[0][4], ListeTresors[1])
-    matrice[0][6]=Carte(True, True, False, False, 0, [])  #On ne met pas de tresor sur les coins
-    
-
-
-    # 2eme ligne fixe
-    matrice[2][0]=Carte(False, False, False, True, 0, [])
-    mettreTresor(matrice[2][0], ListeTresors[2])
-    matrice[2][2]=Carte(False, False, False, True, 0, [])
-    mettreTresor(matrice[2][2], ListeTresors[3])
-    matrice[2][4]=Carte(True, False, False, False, 0, [])
-    mettreTresor(matrice[2][4], ListeTresors[4])
-    matrice[2][6]=Carte(False, True, False, False, 0, [])
-    mettreTresor(matrice[2][6], ListeTresors[5])
-    
-
-
-    # 3eme ligne fixe
-    matrice[4][0]=Carte(False, False, False, True, 0, [])
-    mettreTresor(matrice[4][0], ListeTresors[6])
-    matrice[4][2]=Carte(False, False, True, False, 0, [])
-    mettreTresor(matrice[4][2], ListeTresors[7])
-    matrice[4][4]=Carte(False, True, False, False, 0, [])
-    mettreTresor(matrice[4][4], ListeTresors[8])
-    matrice[4][6]=Carte(False, True, False, False, 0, [])
-    mettreTresor(matrice[4][6], ListeTresors[9])
-
-
-    # 4eme et derniere ligne fixe
-    matrice[6][0]=Carte(False, False, True, True, 0, [])      #On ne met pas de tresor sur les coins
-    matrice[6][2]=Carte(False, False, True, False, 0, [])
-    mettreTresor(matrice[6][2], ListeTresors[10])
-    matrice[6][4]=Carte(False, False, True, False, 0, [])
-    mettreTresor(matrice[6][4], ListeTresors[11])
-    matrice[6][6]=Carte(False, True, True, False, 0, [])      #On ne met pas de tresor sur les coins
-
-
-    #cartes amovibles
-    cartesAmovibles=creerCartesAmovibles(12, nbTresors)   #12 car nous avons deja placer 12 tresors
-
-
-    carteDeTrop=cartesAmovibles[0]
-
-    matricePourPlateau=[]
-    for miniListe in matrice:
-        for element in miniListe:
-            matricePourPlateau.append(element)
-
-    cpt=0
-    for i in range(len(matricePourPlateau)):
-        if matricePourPlateau[i]==0:
-            matricePourPlateau[i]=cartesAmovibles[cpt]
-            cpt+=1
-
-    # Nb joueurs
-    if nbJoueurs==1:
-        poserPion(matricePourPlateau[0], 1)
-    if nbJoueurs==2:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-    if nbJoueurs==3:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-        poserPion(matricePourPlateau[42], 3)
-    if nbJoueurs==4:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-        poserPion(matricePourPlateau[42], 3)
-        poserPion(matricePourPlateau[48], 4)
-
-    """
-    cpt=0
-    matrice=[]
-    miniListe=[]
-
-    for nb in matricePourPlateau:
-        if cpt!=7:
-            miniListe.append(nb)
-            cpt+=1
-        else:
-            matrice.append(miniListe)
-            miniListe=[]
-            cpt=0
-    """
-    return matricePourPlateau,CarteDeTrop
-
-print(Plateau(4, 12))
+import random
 
 def creerCartesAmovibles(tresorDebut,nbTresors):
     """
@@ -141,7 +29,7 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
     #Nb jonctions a faire:
     cptJonctions = 6
 
-    #nb ToutDroit a faire:
+    #Nb ToutDroit a faire:
     cptToutDroit = 12
 
     while cptCoins>0:
@@ -166,12 +54,127 @@ def creerCartesAmovibles(tresorDebut,nbTresors):
             cptToutDroit-=1
 
 
-    shuffle(listeCartes)
+    random.shuffle(listeCartes)
     
     alea=None
-    for i in range(0,len(listeCartes),2):
+    for i in range(tresorDebut,nbTresors+1):
         mettreTresor(listeCartes[i], i)
+    
     return listeCartes
+
+def Plateau(nbJoueurs, nbTresors):
+    """
+    créer un nouveau plateau contenant nbJoueurs et nbTrésors
+    paramètres: nbJoueurs le nombre de joueurs (un nombre entre 1 et 4)
+                nbTresors le nombre de trésor à placer (un nombre entre 1 et 49)
+    resultat: un couple contenant
+              - une matrice de taille 7x7 représentant un plateau de labyrinthe où les cartes
+                ont été placée de manière aléatoire
+              - la carte amovible qui n'a pas été placée sur le plateau
+    """
+
+    # Liste des tresors
+    ListeTresors=[]
+    for i in range(1,13):         #Il y a 12 tresors
+        ListeTresors.append(i)  
+    random.shuffle(ListeTresors)
+
+    matrice=Matrice(7,7,0)
+    
+    # 1ere ligne fixe
+    matrice[0][0]=Carte(True, False, False, True, 0, [])        #On ne met pas de tresor sur les coins
+    matrice[0][2]=Carte(True, False, False, False, ListeTresors[0], [])
+    matrice[0][4]=Carte(True, False, False, False, ListeTresors[1], [])
+    matrice[0][6]=Carte(True, True, False, False, 0, [])  #On ne met pas de tresor sur les coins
+
+    # 2eme ligne fixe
+    matrice[2][0]=Carte(False, False, False, True, ListeTresors[2], [])
+    matrice[2][2]=Carte(False, False, False, True, ListeTresors[3], [])
+    matrice[2][4]=Carte(True, False, False, False, ListeTresors[4], [])
+    matrice[2][6]=Carte(False, True, False, False, ListeTresors[5], [])
+
+
+    # 3eme ligne fixe
+    matrice[4][0]=Carte(False, False, False, True, ListeTresors[6], [])
+    matrice[4][2]=Carte(False, False, True, False, ListeTresors[7], [])
+    matrice[4][4]=Carte(False, True, False, False, ListeTresors[8], [])
+    matrice[4][6]=Carte(False, True, False, False, ListeTresors[9], [])
+
+
+    # 4eme et derniere ligne fixe
+    matrice[6][0]=Carte(False, False, True, True, 0, [])      #On ne met pas de tresor sur les coins
+    matrice[6][2]=Carte(False, False, True, False, ListeTresors[10], [])
+    matrice[6][4]=Carte(False, False, True, False, ListeTresors[11], [])
+    matrice[6][6]=Carte(False, True, True, False, 0, [])      #On ne met pas de tresor sur les coins
+
+
+    #cartes amovibles
+    listeAmovibles=creerCartesAmovibles(13, nbTresors)   #13 car nous avons deja placer 12 tresors
+
+    CarteDeTrop=listeAmovibles[-1]
+    listeAmovibles.pop()
+
+    matricePourPlateau=[]
+    for miniListe in matrice:
+        for element in miniListe:
+            matricePourPlateau.append(element)
+
+    cpt=0
+    for i in range(len(matricePourPlateau)):
+        if matricePourPlateau[i]==0:
+            matricePourPlateau[i]=listeAmovibles[cpt]
+            cpt+=1
+    """
+    # Nb joueurs
+    if nbJoueurs==1:
+        poserPion(matricePourPlateau[0], 1)
+    elif nbJoueurs==2:
+        poserPion(matricePourPlateau[0], 1)
+        poserPion(matricePourPlateau[6], 2)
+    elif nbJoueurs==3:
+        poserPion(matricePourPlateau[0], 1)
+        poserPion(matricePourPlateau[6], 2)
+        poserPion(matricePourPlateau[42], 3)
+    else:
+        poserPion(matricePourPlateau[0], 1)
+        poserPion(matricePourPlateau[6], 2)
+        poserPion(matricePourPlateau[42], 3)
+        poserPion(matricePourPlateau[48], 4)
+
+    """
+    if nbJoueurs==1:
+        matricePourPlateau[0]['pions'].append(1)
+    elif nbJoueurs==2:
+        matricePourPlateau[0]['pions'].append(1)
+        matricePourPlateau[6]['pions'].append(2)
+    elif nbJoueurs==3:
+        matricePourPlateau[0]['pions'].append(1)
+        matricePourPlateau[6]['pions'].append(2)
+        matricePourPlateau[42]['pions'].append(3)
+    else:
+        matricePourPlateau[0]['pions'].append(1)
+        matricePourPlateau[6]['pions'].append(2)
+        matricePourPlateau[42]['pions'].append(3)
+        matricePourPlateau[48]['pions'].append(4)
+    
+    
+    """
+    cpt=0
+                
+    matrice=[]
+    miniListe=[]
+
+    for nb in matricePourPlateau:
+        if cpt!=7:
+            miniListe.append(nb)
+            cpt+=1
+        else:
+            matrice.append(miniListe)
+            miniListe=[]
+            cpt=0
+    """
+    return [matricePourPlateau,CarteDeTrop]
+
 
 def prendreTresorPlateau(plateau,lig,col,numTresor):
     """
@@ -200,15 +203,20 @@ def getCoordonneesTresor(plateau,numTresor):
     resultat: un couple d'entier donnant les coordonnées du trésor ou None si
               le trésor n'est pas sur le plateau
     """
+    matrice=[]
+    miniListe=[]
+    
+    for element in plateau[0]:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            matrice.append(miniListe)
+            miniListe=[]
+
     res=None
-    lig=0
-    col=0
-    for carte in plateau[0]:
-        if carte['tresor']==numTresor:
-            res=(lig,col)
-        else:
-            lig+=1
-            col+=1
+    for lig in range(len(matrice)):
+        for carte in range(len(matrice[lig])):
+            if getTresor(matrice[lig][carte])==numTresor:
+                res=(lig,carte)
     return res
 
 def getCoordonneesJoueur(plateau,numJoueur):
@@ -219,15 +227,21 @@ def getCoordonneesJoueur(plateau,numJoueur):
     resultat: un couple d'entier donnant les coordonnées du joueur ou None si
               le joueur n'est pas sur le plateau
     """
+    matrice=[]
+    miniListe=[]
+    
+    for element in plateau[0]:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            matrice.append(miniListe)
+            miniListe=[]
+
+
     res=None
-    lig=0
-    col=0
-    for carte in plateau[0]:
-        if numJoueur in carte['pions']:
-            res=(lig,col)
-        else:
-            lig+=1
-            col+=1
+    for lig in range(len(matrice)):
+        for carte in range(len(matrice[lig])):
+            if possedePion(matrice[lig][carte],numJoueur):
+                res=(lig,carte)
     return res
 
 def prendrePionPlateau(plateau,lin,col,numJoueur):
@@ -239,7 +253,7 @@ def prendrePionPlateau(plateau,lin,col,numJoueur):
                 numJoueur: le numéro du joueur qui correspond au pion
     Cette fonction ne retourne rien mais elle modifie le plateau
     """
-    poserPion(getVal(plateau,lin,col), numJoueur)    
+    prendrePion(getVal(plateau,lin,col), numJoueur)    
 
 def poserPionPlateau(plateau,lin,col,numJoueur):
     """
@@ -281,3 +295,18 @@ def accessibleDist(plateau,ligD,colD,ligA,colA):
               de départ et la case d'arrivée
     """
     pass
+
+
+def affichePlateau(matrice):
+
+    mat=[]
+    miniListe=[]
+    
+    for element in matrice:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            mat.append(miniListe)
+            miniListe=[]
+
+    afficheMatrice(mat)
+affichePlateau(Plateau(2,27)[0])
