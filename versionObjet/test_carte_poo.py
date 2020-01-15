@@ -8,6 +8,7 @@ from carte import Carte
 
 listeCartes_ = ['╬', '╦', '╣', '╗', '╩', '═', '╝', 'Ø', '╠', '╔', '║', 'Ø', '╚', 'Ø', 'Ø', 'Ø']
 
+
 class TestCarte(unittest.TestCase):
     def setUp(self):
         self.O = 8
@@ -159,8 +160,21 @@ class TestCarte(unittest.TestCase):
             if i not in (7, 11):
                 c = copy.deepcopy(self.liste_cartes[i])
                 c.tournerHoraire()
-                self.assertEqual(c.murs, self.liste_cartes_droite[i].murs, "problème avec la fonction l'appel tournerHoraire(" +
-                                 str(self.liste_cartes[i]) + ")\nRésultat attendu " + str(self.liste_cartes_droite[i]) +
+                self.assertEqual(c.murEst(), self.liste_cartes_droite[i].murEst(),
+                                 "problème avec la fonction l'appel tournerHoraire(" +
+                                 str(self.liste_cartes[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murOuest(), self.liste_cartes_droite[i].murOuest(),
+                                 "problème avec la fonction l'appel tournerHoraire(" +
+                                 str(self.liste_cartes[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murSud(), self.liste_cartes_droite[i].murSud(),
+                                 "problème avec la fonction l'appel tournerHoraire(" +
+                                 str(self.liste_cartes[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murNord(), self.liste_cartes_droite[i].murNord(),
+                                 "problème avec la fonction l'appel tournerHoraire(" +
+                                 str(self.liste_cartes[i]) +
                                  "\nRésultat obtenu " + str(c))
 
     def test_tournerAntiHoraire(self):
@@ -168,8 +182,21 @@ class TestCarte(unittest.TestCase):
             if i not in (7, 11):
                 c = copy.deepcopy(self.liste_cartes_droite[i])
                 c.tournerAntiHoraire()
-                self.assertEqual(c.murs, self.liste_cartes[i].murs, "problème avec la fonction l'appel tournerAntiHoraire(" +
-                                 str(self.liste_cartes_droite[i]) + ")\nRésultat attendu " + str(self.liste_cartes[i]) +
+                self.assertEqual(c.murEst(), self.liste_cartes[i].murEst(),
+                                 "problème avec la fonction l'appel tournerAntiHoraire(" +
+                                 str(self.liste_cartes_droite[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murOuest(), self.liste_cartes[i].murOuest(),
+                                 "problème avec la fonction l'appel tournerAntiHoraire(" +
+                                 str(self.liste_cartes_droite[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murSud(), self.liste_cartes[i].murSud(),
+                                 "problème avec la fonction l'appel tournerAntiHoraire(" +
+                                 str(self.liste_cartes_droite[i]) +
+                                 "\nRésultat obtenu " + str(c))
+                self.assertEqual(c.murNord(), self.liste_cartes[i].murNord(),
+                                 "problème avec la fonction l'appel tournerAntiHoraire(" +
+                                 str(self.liste_cartes_droite[i]) +
                                  "\nRésultat obtenu " + str(c))
 
     def test_getTresor(self):
@@ -220,7 +247,16 @@ class TestCarte(unittest.TestCase):
         c = Carte(True, True, True, True)
         for i in range(16):
             c.decoderMurs(i)
-            self.assertEqual(c.murs, self.liste_cartes[i].murs, "le resultat de decoderMur avec le code " + str(i) +
+            self.assertEqual(c.murNord(), self.liste_cartes[i].murNord(), "le resultat de decoderMur avec le code " + str(i) +
+                             " aurait du donner " + str(self.liste_cartes[i]) + " mais on a obtenu " + str(c))
+            self.assertEqual(c.murEst(), self.liste_cartes[i].murEst(),
+                             "le resultat de decoderMur avec le code " + str(i) +
+                             " aurait du donner " + str(self.liste_cartes[i]) + " mais on a obtenu " + str(c))
+            self.assertEqual(c.murSud(), self.liste_cartes[i].murSud(),
+                             "le resultat de decoderMur avec le code " + str(i) +
+                             " aurait du donner " + str(self.liste_cartes[i]) + " mais on a obtenu " + str(c))
+            self.assertEqual(c.murOuest(), self.liste_cartes[i].murOuest(),
+                             "le resultat de decoderMur avec le code " + str(i) +
                              " aurait du donner " + str(self.liste_cartes[i]) + " mais on a obtenu " + str(c))
 
     def test_toChar(self):
