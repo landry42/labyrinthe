@@ -9,7 +9,7 @@
    Ce module gère un joueur. 
 """
 class Joueur(object):
-    def _init(self,nom):
+    def __init__(self,nom):
         """
         constructeur
         """
@@ -44,7 +44,7 @@ class Joueur(object):
             joueur le joueur
         résultat un entier représentant le trésor ou None
         """
-        if getNbTresorsRestants(self) > 0:
+        if self.getNbTresorsRestants() > 0:
             res = self._tresor[0]
         else:
             res = None
@@ -75,14 +75,26 @@ class Joueur(object):
         """
         return self._nom
 
-if __name__=='__main__':
-    j1=Joueur("François")
-    j1.ajouterTresor(2)
-    j1.ajouterTresor(5)
-    j1.ajouterTresor(8)
-    assert j1.getNom()=="François" and j1.getNbTresorsRestants()==3 and j1.getTresors()==[2,5,8]
-    assert j1.getNbTresorsRestants()==3
-    j1.tresorTrouve()
-    assert j1.prochainTresor()==5
-    assert j1.getNom()=="François" and j1.getNbTresorsRestants()==2 and j1.getTresors()==[5,8]
-print("---------------\nIt just works !\n--------------
+    def getTresors(self):
+        return self._tresor
+
+    def getNumJoueur(self):
+        return self._numjoueur
+
+    def setNumJoueur(self,numjoueur):
+        self._numjoueur = numjoueur
+
+    def addTresor(self,tresor):
+        self._tresor.append(tresor)
+
+# if __name__=='__main__':
+#     j1=Joueur("François")
+#     j1.ajouterTresor(2)
+#     j1.ajouterTresor(5)
+#     j1.ajouterTresor(8)
+#     assert j1.getNom()=="François" and j1.getNbTresorsRestants()==3 and j1.getTresors()==[2,5,8]
+#     assert j1.getNbTresorsRestants()==3
+#     j1.tresorTrouve()
+#     assert j1.prochainTresor()==5
+#     assert j1.getNom()=="François" and j1.getNbTresorsRestants()==2 and j1.getTresors()==[5,8]
+# print("---------------\nIt just works !\n--------------")
