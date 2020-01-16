@@ -49,10 +49,11 @@ class Carte(object):
         retourne un booléen indiquant si la carte est valide ou non c'est à dire qu'elle a zéro un ou deux murs
         paramètre: c une carte
         """
+        dico=self._nord,self._sud,self._est,self._ouest
         res=True
         cpt=0
-        for a,b in self.items():
-            if b==True:
+        for elem in dico:
+            if elem==True:
                 cpt+=1
         if cpt>2:
             res=False
@@ -304,7 +305,7 @@ class Carte(object):
         résultat un booléen
         """
         res=False
-        if not self._nord and not carte2['sud']:
+        if not self._nord and not carte2._sud:
             res=True
         return res
 
@@ -316,7 +317,7 @@ class Carte(object):
         résultat un booléen
         """
         res=False
-        if not self._sud and not carte2['nord']:
+        if not self._sud and not carte2._nord:
             res=True
         return res
 
@@ -328,7 +329,7 @@ class Carte(object):
         résultat un booléen
         """
         res=False
-        if not self._ouest and not carte2['est']:
+        if not self._ouest and not carte2._est:
             res=True
         return res
 
@@ -340,6 +341,6 @@ class Carte(object):
         résultat un booléen    
         """
         res=False
-        if not self._est and not carte2['ouest']:
+        if not self._est and not carte2._ouest:
             res=True
         return res
