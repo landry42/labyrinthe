@@ -74,7 +74,6 @@ def afficheLabyrinthe(lmt,message="",sauts=0):
                 sauts: nombre de lignes à sauter à la fin de l'affichage
     Le fonction ne retourne rien mais affiche le labyrinthe à l'écran
     """
-    print(lmt)
     clearscreen();
     print(message)
     labyrinthe=getLabyrinthe(lmt)
@@ -165,7 +164,7 @@ def saisirOrdre(lmt):
               c'est à dire le numéro de la ligne ou de la colonne où insérer la carte
               si l'ordre saisi n'est pas valide la focntion retourne (-1,-1)
     """
-    print(lmt)
+
     res = (-1,-1)
     t=True
     while t:
@@ -185,12 +184,6 @@ def saisirOrdre(lmt):
             print('else')
     return res
 
-    """    
-    res = tuple(input("Entrez T pour tourner la carte, sinon le couple (N ou E ou S ou O, 1 ou 3 ou 5) pour insérer une carte"))
-    if res[0] not in ['T','N','E','S','O'] and res[1] not in [1,3,5]:
-        res = (-1,-1)
-    return res
-    """
 
 
 def saisirDeplacement(lmt):
@@ -199,7 +192,7 @@ def saisirDeplacement(lmt):
     paramètre: lmt: une vue texte de labyrinthe
     résultat: un couple d'entier (lin,col) indiquant les coordonnées de la case destination. Si l'utilisateur a entré des coordonnées incorrecte la fonction retourne (-1,-1)
     """    
-    print(lmt)
+
     res=(-1,-1)
     while res==(-1,-1):
         resultat=input('Entrez le côté où vous souhaitez jouer : ')
@@ -209,13 +202,6 @@ def saisirDeplacement(lmt):
                 if resultat_split[0] in '0123456' and resultat_split[1] in '0123456':
                     res=(int(resultat_split[0]),int(resultat[1]))
     return res
-
-    """
-    res = tuple(input("Saisissez les coordonnées de la case destination sous la forme d'un couple (ligne,colone)"))
-    if res[0] not in [1,3,5] and res[1] not in [1,3,5]:
-        res = (-1,-1)
-    return res
-    """
         
 # demarre la partie en mode texte
 def demarrer(lmt):

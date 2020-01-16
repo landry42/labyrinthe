@@ -24,7 +24,6 @@ def Matrice(nbLignes,nbColonnes,valeurParDefaut=0):
       valeurParDefaut la valeur par défaut
     résultat la matrice ayant les bonnes propriétés
     """
-    #return [[valeurParDefaut]*nbColonnes]*nbLignes
     res = [valeurParDefaut] * nbLignes
     for i in range(nbLignes):
         res[i] = [valeurParDefaut] * nbColonnes
@@ -99,7 +98,7 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
     matrice[numLig].pop()
     return ejectee
 
-mat=[[1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7]]
+#mat=[[1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7]]
 
 def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
     """
@@ -148,7 +147,9 @@ def afficheLigneSeparatrice(matrice,tailleCellule=4):
     print()
 
 def afficheMatrice(matrice,tailleCellule=4):
-
+    """
+    affiche une matrice
+    """"
     nbColonnes=getNbColonnes(matrice)
     nbLignes=getNbLignes(matrice)
     print(' '*tailleCellule+'|', end='')

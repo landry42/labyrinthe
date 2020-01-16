@@ -38,19 +38,31 @@ def Labyrinthe(nomsJoueurs=["joueur1","joueurs2"],nbTresors=24, nbTresorsMax=0):
         return 'Erreur : Le jeu du labyrinthe ne peut être joué qu\'à 4 !'
     return res
 
-laby=Labyrinthe(["joueur1","joueurs2"],24,0)
-#print(laby['plateau'][0])
-#print(len(laby['plateau'][0]))
+#laby=Labyrinthe(["joueur1","joueur2"],24,0)
+
 
 def liste_to_liste_de_liste_labyrinthe(labyrinthe):
+    """
+    transforme une liste en liste de liste
+    """
     mat=[]
     miniListe=[]
     for element in labyrinthe['plateau'][0]:
-        miniListe.append(element)
+        miniListe.append(element.copy())
         if len(miniListe)==7:
             mat.append(miniListe)
             miniListe=[]
     return mat
+
+def liste_de_liste_to_liste(liste):
+    """
+    transforme une liste de liste en liste
+    """
+    res=[]
+    for l in liste:
+        for i in l:
+            res.append(i)
+    return res 
 
 def getPlateau(labyrinthe):
     """
@@ -205,19 +217,16 @@ def jouerCarte(labyrinthe,direction,rangee):
 
     if coupInterdit(labyrinthe, direction, rangee) == False:
         if direction == 'O':
-            labyrinthe["plateau"] = [labyrinthe['plateau'][0],decalageLigneADroite(mat, rangee, labyrinthe["plateau"][1])]
-
+            labyrinthe["plateau"]=[liste_de_liste_to_liste(mat),decalageLigneADroite(mat, rangee, labyrinthe["plateau"][1])]
         elif direction == 'E':
-            labyrinthe["plateau"] = [labyrinthe['plateau'][0],decalageLigneAGauche(mat, rangee, labyrinthe["plateau"][1])]
+            labyrinthe["plateau"] = [liste_de_liste_to_liste(mat),decalageLigneAGauche(mat, rangee, labyrinthe["plateau"][1])]
 
         elif direction == 'S':
-            labyrinthe["plateau"] = [labyrinthe['plateau'][0],decalageColonneEnHaut(mat, rangee, labyrinthe["plateau"][1])]
+            labyrinthe["plateau"] = [liste_de_liste_to_liste(mat),decalageColonneEnHaut(mat, rangee, labyrinthe["plateau"][1])]
 
-        else:
-            labyrinthe["plateau"] = [labyrinthe['plateau'][0],decalageColonneEnBas(mat, rangee, labyrinthe["plateau"][1])]
+        elif direction=='N':
+            labyrinthe["plateau"] = [liste_de_liste_to_liste(mat),decalageColonneEnBas(mat, rangee, labyrinthe["plateau"][1])]
 
-
-#print(jouerCarte(laby,'N',3))
 
 def tournerCarte(labyrinthe,sens='H'):
     """
@@ -237,10 +246,7 @@ def getTresorCourant(labyrinthe):
     paramètre: labyritnthe: le labyrinthe considéré
     resultat: le numéro du trésor recherché par le joueur courant
     """
-    #print(laby)
-    #print(getNumJoueurCourant(labyrinthe))
     return labyrinthe["participants"][0]["tresor"][0]
-#print(getTresorCourant(laby))
 
 def getCoordonneesTresorCourant(labyrinthe):
     """
@@ -259,11 +265,7 @@ def getCoordonneesJoueurCourant(labyrinthe):
     resultat: les coordonnées du joueur courant ou None si celui-ci
               n'est pas sur le plateau
     """
-    #print(laby)
-    #print(getNumJoueurCourant(labyrinthe))
     return getCoordonneesJoueur(labyrinthe['plateau'][0], getNumJoueurCourant(labyrinthe))
-#print(getCoordonneesJoueurCourant(laby))
-#print(getCoordonneesJoueur(laby['plateau'][0],1))
 
 def executerActionPhase1(labyrinthe,action,rangee):
     """
@@ -295,7 +297,6 @@ def executerActionPhase1(labyrinthe,action,rangee):
     else:
         res= 4
     return res
-print(executerActionPhase1(laby,'U',6))
 
 def accessibleDistJoueurCourant(labyrinthe, ligA,colA):
     """
@@ -310,9 +311,8 @@ def accessibleDistJoueurCourant(labyrinthe, ligA,colA):
     """
     x,y = getCoordonneesJoueurCourant(labyrinthe)
     res = accessibleDist(labyrinthe['plateau'][0], x, y , ligA, colA)
-    print(accessibleDist(labyrinthe['plateau'][0], x, y , ligA, colA))
     return res
-#print(accessibleDistJoueurCourant(laby,0,3))
+
 
 def finirTour(labyrinthe):
     """
@@ -327,11 +327,11 @@ def finirTour(labyrinthe):
     mat=liste_to_liste_de_liste_labyrinthe(labyrinthe)
 
     joueurCourant = getJoueurCourant(labyrinthe["participants"])
-    p_coords = getCoordonneesJoueurCourant(labyrinthe)
-    t_coords = getCoordonneesTresorCourant(labyrinthe)
+    joueur_coords = getCoordonneesJoueurCourant(labyrinthe)
+    tresor_coords = getCoordonneesTresorCourant(labyrinthe)
     res= 0
-    if p_coords == t_coords:
-        prendreTresorPlateau(mat, t_coords[1], t_coords[0], joueurCourant['tresor'][0])
+    if joueur_coords == tresor_coords:
+        prendreTresorPlateau(mat, tresor_coords[1], tresor_coords[0], joueurCourant['tresor'][0])
         joueurCourant["tresor"].pop(0)
 
         changerJoueurCourant(labyrinthe["participants"])

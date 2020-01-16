@@ -47,9 +47,9 @@ def initAleatoireJoueurCourant(joueurs):
     for i in range(len(joueurs)):
         joueurs[i]["numJoueur"] = i+1
 
-Liste_Noms = ["Player1","Player2","Player3","Player4"]
-liste_joueurs = ListeJoueurs(Liste_Noms)
-initAleatoireJoueurCourant(liste_joueurs)
+#Liste_Noms = ["Player1","Player2","Player3","Player4"]
+#liste_joueurs = ListeJoueurs(Liste_Noms)
+#initAleatoireJoueurCourant(liste_joueurs)
     
 def distribuerTresors(joueurs,nbTresors=24, nbTresorMax=0):
     """
@@ -85,9 +85,6 @@ def changerJoueurCourant(joueurs):
     j=joueurs.pop(0)
     joueurs.append(j)
 
-# print(liste_joueurs)
-# changerJoueurCourant(liste_joueurs)
-# print(liste_joueurs)
 
 def getNbJoueurs(joueurs):
     """

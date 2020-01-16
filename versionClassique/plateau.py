@@ -75,7 +75,7 @@ def Plateau(nbJoueurs, nbTresors):
 
     # Liste des tresors
     ListeTresors=[]
-    for i in range(1,13):         #Il y a 12 tresors
+    for i in range(1,13):
         ListeTresors.append(i)  
     random.shuffle(ListeTresors)
 
@@ -85,7 +85,7 @@ def Plateau(nbJoueurs, nbTresors):
     matrice[0][0]=Carte(True, False, False, True, 0, [])        #On ne met pas de tresor sur les coins
     matrice[0][2]=Carte(True, False, False, False, ListeTresors[0], [])
     matrice[0][4]=Carte(True, False, False, False, ListeTresors[1], [])
-    matrice[0][6]=Carte(True, True, False, False, 0, [])  #On ne met pas de tresor sur les coins
+    matrice[0][6]=Carte(True, True, False, False, 0, [])        #On ne met pas de tresor sur les coins
 
     # 2eme ligne fixe
     matrice[2][0]=Carte(False, False, False, True, ListeTresors[2], [])
@@ -109,7 +109,7 @@ def Plateau(nbJoueurs, nbTresors):
 
 
     #cartes amovibles
-    listeAmovibles=creerCartesAmovibles(13, nbTresors)   #13 car nous avons deja placer 12 tresors
+    listeAmovibles=creerCartesAmovibles(13, nbTresors)
 
     CarteDeTrop=listeAmovibles[-1]
     listeAmovibles.pop()
@@ -124,24 +124,7 @@ def Plateau(nbJoueurs, nbTresors):
         if matricePourPlateau[i]==0:
             matricePourPlateau[i]=listeAmovibles[cpt]
             cpt+=1
-    """
-    # Nb joueurs
-    if nbJoueurs==1:
-        poserPion(matricePourPlateau[0], 1)
-    elif nbJoueurs==2:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-    elif nbJoueurs==3:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-        poserPion(matricePourPlateau[42], 3)
-    else:
-        poserPion(matricePourPlateau[0], 1)
-        poserPion(matricePourPlateau[6], 2)
-        poserPion(matricePourPlateau[42], 3)
-        poserPion(matricePourPlateau[48], 4)
-
-    """
+    
     if nbJoueurs==1:
         matricePourPlateau[0]['pions'].append(1)
     elif nbJoueurs==2:
@@ -158,21 +141,7 @@ def Plateau(nbJoueurs, nbTresors):
         matricePourPlateau[48]['pions'].append(4)
     
     
-    """
-    cpt=0
-                
-    matrice=[]
-    miniListe=[]
-
-    for nb in matricePourPlateau:
-        if cpt!=7:
-            miniListe.append(nb)
-            cpt+=1
-        else:
-            matrice.append(miniListe)
-            miniListe=[]
-            cpt=0
-    """
+    
     return [matricePourPlateau,CarteDeTrop]
 
 
@@ -253,7 +222,7 @@ def getCoordonneesJoueur(plateau,numJoueur):
                 colonne=lig
                 ligne=col
     return (colonne,ligne)
-#print(getCoordonneesJoueur(Plateau(2,24)[0],2))
+
 def prendrePionPlateau(plateau,lin,col,numJoueur):
     """
     prend le pion du joueur sur la carte qui se trouve en (lig,col) du plateau
@@ -278,14 +247,7 @@ def poserPionPlateau(plateau,lin,col,numJoueur):
 
 def affichePlateau(matrice):
     """
-    mat=[]
-    miniListe=[]
-    
-    for element in matrice:
-        miniListe.append(element)
-        if len(miniListe)==7:
-            mat.append(miniListe)
-            miniListe=[]
+    Affiche la matrice sous forme du plateau de jeu
     """
     afficheMatrice(matrice)
 
@@ -344,48 +306,7 @@ def accessible(plateau,ligD,colD,ligA,colA):
 
 def accessibleCalque(plateau,ligD,colD,ligA,colA):
     """
-    matrice=[]
-    miniListe=[]
-
-    for element in plateau[0]:
-        miniListe.append(element)
-        if len(miniListe)==7:
-            matrice.append(miniListe)
-            miniListe=[]
-
-    res=False
-    t=True
-    marque=1
-    calque=Matrice(getNbLignes(matrice),getNbColonnes(matrice))
-    setVal(calque,ligD,colD,marque)
-    while t==True:
-        t=False
-        for i in range(getNbLignes(matrice)):
-            for j in range(getNbColonnes(matrice)):
-                if getVal(calque,i,j)!=0:
-                    CoordonneesAutours=[(i+1,j),(i,j+1),(i-1,j),(i,j-1)]
-                    for (a,b) in CoordonneesAutours:
-                        if not a>=getNbLignes(matrice) and not a<0 and not b>=getNbColonnes(matrice) and not b<0:
-                            if getVal(calque,a,b)==0:
-                                if (a,b)==(i+1,j):
-                                    if passageSud(getVal(matrice,i,j), getVal(matrice,a,b)):
-                                        setVal(calque,a,b,getVal(calque,i,j)+1)
-                                        t=True
-                                elif (a,b)==(i,j+1):
-                                    if passageEst(getVal(matrice,i,j), getVal(matrice,a,b)):
-                                        setVal(calque,a,b,getVal(calque,i,j)+1)
-                                        t=True
-                                elif (a,b)==(i-1,j):
-                                    if passageNord(getVal(matrice,i,j),getVal(matrice,a,b)):
-                                        setVal(calque,a,b,getVal(calque,i,j)+1)
-                                        t=True
-                                elif (a,b)==(i,j-1):
-                                    if passageOuest(getVal(matrice,i,j), getVal(matrice,a,b)):
-                                        setVal(calque,a,b,getVal(calque,i,j)+1)
-                                        t=True
-    if getVal(calque,ligA,colA)!=0:
-        res=True
-    return calque
+    Meme fonction que accessible mais qui retourne le calque
     """
     if len(plateau)!=7:
         matrice=[]
@@ -450,18 +371,17 @@ def accessibleDist(plateau,ligD,colD,ligA,colA):
     if accessible(plateau,ligD,colD,ligA,colA):
         calque=accessibleCalque(plateau,ligD,colD,ligA,colA)
         while not (ligD,colD) in Chemin:
-        	t=True
-        	ValeursACote=[(pos[0]+1,pos[1]), (pos[0]-1,pos[1]), (pos[0],pos[1]+1),(pos[0],pos[1]-1)]
-        	i=0
-        	while t==True:
-        		(a,b)=ValeursACote[i]
-        		if getVal(calque,a,b)==getVal(calque,Chemin[-1][0],Chemin[-1][1])-1 and getVal(calque,a,b)!=0:
-        			Chemin.append((a,b))
-        			pos=(a,b)
-        			t=False
-        		i+=1
+            t=True
+            ValeursACote=[(pos[0]+1,pos[1]), (pos[0]-1,pos[1]), (pos[0],pos[1]+1),(pos[0],pos[1]-1)]
+            i=0
+            while t==True:
+                (a,b)=ValeursACote[i]
+                if getVal(calque,a,b)==getVal(calque,Chemin[-1][0],Chemin[-1][1])-1 and getVal(calque,a,b)!=0:
+                    
+                    Chemin.append((a,b))
+                    pos=(a,b)
+                    t=False
+                i+=1
         Chemin.reverse()
         res=Chemin
     return res
-
-

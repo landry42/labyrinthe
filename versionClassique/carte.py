@@ -18,6 +18,7 @@ le caractère 'Ø' indique que l'indice ne correspond pas à une carte
 """
 listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
 #carte={'nord':True,'est':False,'sud':False,'ouest':False,'tresor':0,'pions':[1]}
+
 def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
     """
     permet de créer une carte:
@@ -272,10 +273,6 @@ def decoderMurs(c,code):
     c["sud"] = bool(int(conversion_4_bits[1]))
     c["est"] = bool(int(conversion_4_bits[2]))
     c["nord"] = bool(int(conversion_4_bits[3]))
-
-
-
-#Carte={'nord':False,'est':False,'sud':False,'ouest':True,'tresor':0,'pions':[]}
 
 
 def toChar(c):
