@@ -99,6 +99,7 @@ def decalageLigneADroite(matrice, numLig, nouvelleValeur=0):
     matrice[numLig].pop()
     return ejectee
 
+mat=[[1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7], [1,2,3,4,5,6,7]]
 
 def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
     """
@@ -114,9 +115,8 @@ def decalageColonneEnHaut(matrice, numCol, nouvelleValeur=0):
     for i in range(0,len(matrice)-1):
         matrice[i][numCol]=matrice[i+1][numCol]
     matrice[len(matrice)-1][numCol]=nouvelleValeur
-    return ejectee,matrice
+    return ejectee
 
-matrice=[[6, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [8, 0, 0, 0, 0, 0, 0]]
 
 
 def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
@@ -133,7 +133,9 @@ def decalageColonneEnBas(matrice, numCol, nouvelleValeur=0):
     for i in reversed(range(1,len(matrice))):
         matrice[i][numCol]=matrice[i-1][numCol]
     matrice[0][numCol]=nouvelleValeur
-    return ejectee,matrice
+    return ejectee
+
+
 
 def afficheLigneSeparatrice(matrice,tailleCellule=4):
     '''

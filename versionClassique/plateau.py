@@ -187,6 +187,15 @@ def prendreTresorPlateau(plateau,lig,col,numTresor):
                 numTresor: le numéro du trésor à prendre sur la carte
     resultat: un booléen indiquant si le trésor était bien sur la carte considérée
     """
+    matrice=[]
+    miniListe=[]
+    
+    for element in plateau:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            matrice.append(miniListe)
+            miniListe=[]
+            
     res=getVal(plateau,lig,col)
     if numTresor==res["tresor"]:
         Booleen=True
@@ -206,7 +215,7 @@ def getCoordonneesTresor(plateau,numTresor):
     matrice=[]
     miniListe=[]
     
-    for element in plateau[0]:
+    for element in plateau:
         miniListe.append(element)
         if len(miniListe)==7:
             matrice.append(miniListe)
@@ -230,20 +239,21 @@ def getCoordonneesJoueur(plateau,numJoueur):
     matrice=[]
     miniListe=[]
     
-    for element in plateau[0]:
+    for element in plateau:
         miniListe.append(element)
         if len(miniListe)==7:
             matrice.append(miniListe)
             miniListe=[]
 
-
-    res=None
-    for lig in range(len(matrice)):
-        for carte in range(len(matrice[lig])):
-            if possedePion(matrice[lig][carte],numJoueur):
-                res=(lig,carte)
-    return res
-
+    colonne,ligne= 0,0
+    for lig in range(getNbColonnes(matrice)):
+        for col in range(getNbLignes(matrice)):
+            carte=getVal(matrice,lig,col)
+            if possedePion(carte,numJoueur):
+                colonne=lig
+                ligne=col
+    return (colonne,ligne)
+#print(getCoordonneesJoueur(Plateau(2,24)[0],2))
 def prendrePionPlateau(plateau,lin,col,numJoueur):
     """
     prend le pion du joueur sur la carte qui se trouve en (lig,col) du plateau
@@ -266,6 +276,18 @@ def poserPionPlateau(plateau,lin,col,numJoueur):
     """
     poserPion(getVal(plateau,lin,col), numJoueur)
 
+def affichePlateau(matrice):
+    """
+    mat=[]
+    miniListe=[]
+    
+    for element in matrice:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            mat.append(miniListe)
+            miniListe=[]
+    """
+    afficheMatrice(matrice)
 
 def accessible(plateau,ligD,colD,ligA,colA):
     """
@@ -278,7 +300,134 @@ def accessible(plateau,ligD,colD,ligA,colA):
     résultat: un boolean indiquant s'il existe un chemin entre la case de départ
               et la case d'arrivée
     """
-    pass
+    if len(plateau)!=7:
+        matrice=[]
+        miniListe=[]
+        for element in plateau:
+            miniListe.append(element)
+            if len(miniListe)==7:
+                matrice.append(miniListe)
+                miniListe=[]
+    res=False
+    t=True
+    marque=1
+    calque=Matrice(getNbLignes(matrice),getNbColonnes(matrice))
+    setVal(calque,ligD,colD,marque)
+    while t==True:
+        t=False
+        for i in range(getNbLignes(matrice)):
+            for j in range(getNbColonnes(matrice)):
+                if getVal(calque,i,j)!=0:
+                    CoordonneesAutours=[(i+1,j),(i,j+1),(i-1,j),(i,j-1)]
+                    for (a,b) in CoordonneesAutours:
+                        if not a>=getNbLignes(matrice) and not a<0 and not b>=getNbColonnes(matrice) and not b<0:
+                            if getVal(calque,a,b)==0:
+                                if (a,b)==(i+1,j):
+                                    if passageSud(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j+1):
+                                    if passageEst(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i-1,j):
+                                    if passageNord(getVal(matrice,i,j),getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j-1):
+                                    if passageOuest(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+    if getVal(calque,ligA,colA)!=0:
+        res=True
+    return res
+
+def accessibleCalque(plateau,ligD,colD,ligA,colA):
+    """
+    matrice=[]
+    miniListe=[]
+
+    for element in plateau[0]:
+        miniListe.append(element)
+        if len(miniListe)==7:
+            matrice.append(miniListe)
+            miniListe=[]
+
+    res=False
+    t=True
+    marque=1
+    calque=Matrice(getNbLignes(matrice),getNbColonnes(matrice))
+    setVal(calque,ligD,colD,marque)
+    while t==True:
+        t=False
+        for i in range(getNbLignes(matrice)):
+            for j in range(getNbColonnes(matrice)):
+                if getVal(calque,i,j)!=0:
+                    CoordonneesAutours=[(i+1,j),(i,j+1),(i-1,j),(i,j-1)]
+                    for (a,b) in CoordonneesAutours:
+                        if not a>=getNbLignes(matrice) and not a<0 and not b>=getNbColonnes(matrice) and not b<0:
+                            if getVal(calque,a,b)==0:
+                                if (a,b)==(i+1,j):
+                                    if passageSud(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j+1):
+                                    if passageEst(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i-1,j):
+                                    if passageNord(getVal(matrice,i,j),getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j-1):
+                                    if passageOuest(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+    if getVal(calque,ligA,colA)!=0:
+        res=True
+    return calque
+    """
+    if len(plateau)!=7:
+        matrice=[]
+        miniListe=[]
+        for element in plateau:
+            miniListe.append(element)
+            if len(miniListe)==7:
+                matrice.append(miniListe)
+                miniListe=[]
+    res=False
+    t=True
+    marque=1
+    calque=Matrice(getNbLignes(matrice),getNbColonnes(matrice))
+    setVal(calque,ligD,colD,marque)
+    while t==True:
+        t=False
+        for i in range(getNbLignes(matrice)):
+            for j in range(getNbColonnes(matrice)):
+                if getVal(calque,i,j)!=0:
+                    CoordonneesAutours=[(i+1,j),(i,j+1),(i-1,j),(i,j-1)]
+                    for (a,b) in CoordonneesAutours:
+                        if not a>=getNbLignes(matrice) and not a<0 and not b>=getNbColonnes(matrice) and not b<0:
+                            if getVal(calque,a,b)==0:
+                                if (a,b)==(i+1,j):
+                                    if passageSud(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j+1):
+                                    if passageEst(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i-1,j):
+                                    if passageNord(getVal(matrice,i,j),getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+                                elif (a,b)==(i,j-1):
+                                    if passageOuest(getVal(matrice,i,j), getVal(matrice,a,b)):
+                                        setVal(calque,a,b,getVal(calque,i,j)+1)
+                                        t=True
+    if getVal(calque,ligA,colA)!=0:
+        res=True
+    return calque
 
 def accessibleDist(plateau,ligD,colD,ligA,colA):
     """
@@ -292,21 +441,27 @@ def accessibleDist(plateau,ligD,colD,ligA,colA):
                 ligA: la ligne de la case d'arrivée
                 colA: la colonne de la case d'arrivée
     résultat: une liste de coordonées indiquant un chemin possible entre la case
-              de départ et la case d'arrivée
+            de départ et la case d'arrivée
     """
-    pass
+    calque=None
+    res=None
+    pos=(ligA,colA)
+    Chemin=[(ligA,colA)]
+    if accessible(plateau,ligD,colD,ligA,colA):
+        calque=accessibleCalque(plateau,ligD,colD,ligA,colA)
+        while not (ligD,colD) in Chemin:
+        	t=True
+        	ValeursACote=[(pos[0]+1,pos[1]), (pos[0]-1,pos[1]), (pos[0],pos[1]+1),(pos[0],pos[1]-1)]
+        	i=0
+        	while t==True:
+        		(a,b)=ValeursACote[i]
+        		if getVal(calque,a,b)==getVal(calque,Chemin[-1][0],Chemin[-1][1])-1 and getVal(calque,a,b)!=0:
+        			Chemin.append((a,b))
+        			pos=(a,b)
+        			t=False
+        		i+=1
+        Chemin.reverse()
+        res=Chemin
+    return res
 
 
-def affichePlateau(matrice):
-
-    mat=[]
-    miniListe=[]
-    
-    for element in matrice:
-        miniListe.append(element)
-        if len(miniListe)==7:
-            mat.append(miniListe)
-            miniListe=[]
-
-    afficheMatrice(mat)
-affichePlateau(Plateau(2,27)[0])

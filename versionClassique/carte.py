@@ -17,7 +17,7 @@ l'indice du caractère dans la liste correspond au codage des murs sur la carte
 le caractère 'Ø' indique que l'indice ne correspond pas à une carte
 """
 listeCartes=['╬','╦','╣','╗','╩','═','╝','Ø','╠','╔','║','Ø','╚','Ø','Ø','Ø']
-
+#carte={'nord':True,'est':False,'sud':False,'ouest':False,'tresor':0,'pions':[1]}
 def Carte( nord, est, sud, ouest, tresor=0, pions=[]):
     """
     permet de créer une carte:
@@ -102,10 +102,7 @@ def possedePion(c,pion):
     paramètres: c une carte
                 pion un entier compris entre 1 et 4
     """
-    res=False
-    if pion in c['pions']:
-        res=True
-    return res
+    return pion in c['pions']
 
 def getTresor(c):
     """
