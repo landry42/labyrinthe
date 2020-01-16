@@ -42,7 +42,6 @@ class Matrice(object):
         paramètres:ligne le numéro de la ligne
         colonne le numéro de la colonne
         """             
-        
         return self._matrice[ligne][colonne]
 
     def setVal(self,ligne,colonne,valeur):
@@ -123,6 +122,12 @@ class Matrice(object):
             self._matrice[i][numCol]=self._matrice[i-1][numCol]
         self._matrice[0][numCol]=nouvelleValeur
         return ejectee
+    
+    def getMatrice(self):
+        """
+        retourne la liste des éléments de la matrice
+        """
+        return self._matrice
 
         
        
